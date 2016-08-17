@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+         <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+        <link href="css/starter-template.css" rel="stylesheet">
+
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
+        
+        <script>
+            $(document).ready(function(){
+            $("button").click(function(){
+               $.ajax({
+            url: 'http://api.masterdatanode.com/demo/greeting/find/',
+                    type: 'get',
+                    data: {"LANGUAGE": "AFRIKAANS"},
+                    headers: {
+                    "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+                            "Content-Type":  	'application/json'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                    console.info(JSON.stringify(data));
+                         $("#test_div").html( JSON.stringify(data) );
+                    }
+            });
+            });
+            });
+        </script>
+    </head>
+    <body>
+
+       
+        <div class="container starter-template">
+
+            <div >
+                <h1>HTML and MasterDataNode</h1>
+                <p class="lead">With MasterDataNode you don't require server<br> A standalone html page with CSS and JS, suffice to build an application</p>
+            </div>
+            <div >
+                <button class="btn btn-info">Send an HTTP table find filter request</button>
+            </div>
+           
+
+        </div>
+         <div id="test_div" class="col-lg-8">
+
+
+            </div>
+
+    </body>
+</html>
