@@ -10,13 +10,13 @@
         <!-- Optional theme -->
         <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
 
-        <link href="css/starter-template.css" rel="stylesheet">
-
+       
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
         <script>
             var dataPop = [];
+            var bubbleChart = [['Country', 'Rank', 'PercentageOfWorld', 'Country', 'Population']];
             $(document).ready(function () {
                 $("button").click(function () {
                     var SendInfo = {"limit": 5};
@@ -42,6 +42,7 @@
                                     var val = population[key];
 //                                    alert(JSON.stringify(val['Country']));
                                     dataPop.push([val['Country'], val['Population']]);
+                                    bubbleChart.push([val['Country'], val['Rank'], val['PercentageOfWorld'], val['Country'], val['Population']])
 //                                    alert(JSON.stringify(dataPop));
                                 }
                             }
@@ -57,6 +58,7 @@
                             // Set a callback to run when the Google Visualization API is loaded.
                             google.charts.setOnLoadCallback(drawChart);
                             google.charts.setOnLoadCallback(drawBar);
+                            google.charts.setOnLoadCallback(drawSeriesChart);
 
                         }
                     });
@@ -124,27 +126,61 @@
                 var chart = new google.visualization.BarChart(document.getElementById('bar_div'));
                 chart.draw(data, options);
             }
+            
+            function drawSeriesChart() {
+
+//                var data = google.visualization.arrayToDataTable([
+//                    ['ID', 'Life Expectancy', 'Fertility Rate', 'Region', 'Population'],
+//                    ['CAN', 80.66, 1.67, 'North America', 33739900],
+//                    ['DEU', 79.84, 1.36, 'Europe', 81902307],
+//                    ['DNK', 78.6, 1.84, 'Europe', 5523095],
+//                    ['EGY', 72.73, 2.78, 'Middle East', 79716203],
+//                    ['GBR', 80.05, 2, 'Europe', 61801570],
+//                    ['IRN', 72.49, 1.7, 'Middle East', 73137148],
+//                    ['IRQ', 68.09, 4.77, 'Middle East', 31090763],
+//                    ['ISR', 81.55, 2.96, 'Middle East', 7485600],
+//                    ['RUS', 68.6, 1.54, 'Europe', 141850000],
+//                    ['USA', 78.09, 2.05, 'North America', 307007000]
+//                ]);
+
+                var data = google.visualization.arrayToDataTable(bubbleChart);
+
+                var options = {
+                    title: 'World population Bubble chart',
+                    hAxis: {title: 'Rank'},
+                    vAxis: {title:  'PercentageOfWorld'},
+                    bubble: {textStyle: {fontSize: 11}}
+                };
+
+                var chart = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
+                chart.draw(data, options);
+            }
         </script>
     </head>
 
-    <body>
+    <body >
         <!--Div that will hold the pie chart-->
-        <div class="container starter-template">
+        <div class="container" style="text-align: center">
 
             <div >
-                <h1>HTML and MasterDataNode</h1>
-                <p class="lead">With MasterDataNode you don't require server<br> A standalone html page with CSS and JS, suffice to build an application</p>
+                <h1>Dashboard charts</h1>
+                <p class="lead">With MasterDataNode you don't require server<br> A standalone html page with CSS and JS, suffice to build Chart application</p>
             </div>
             <div >
                 <button class="btn btn-info">Click Button to create charts</button>
             </div>
             <div class="col-lg-12">
-                
+
                 <div id="chart_div" class="col-lg-6"></div>
-            <div id="bar_div" class="col-lg-6"></div>
+                <div id="bar_div" class="col-lg-6"></div>
             </div>
-            
+            <div class="col-lg-12">
+
+                <div id="bubble_div" ></div>
+
+            </div>
+
         </div>
-        
+
     </body>
 </html>
