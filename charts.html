@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+        <link href="css/starter-template.css" rel="stylesheet">
+
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script>
+            var dataPop = [];
+            $(document).ready(function () {
+                $("button").click(function () {
+                    var SendInfo = {"limit": 5};
+
+                    $.ajax({
+                        url: 'http://api.masterdatanode.com/demo/population/find/',
+                        type: 'get',
+                        data: {},
+                        headers: {
+                            "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+                            "Content-Type": 'application/json'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+//                            console.info(JSON.stringify(data));
+//                            $("#test_div").html(JSON.stringify(data));
+
+                            var population = data['population'];
+//                            var myStringArray = ["Hello", "World"];
+                            var obj = {a: 1, b: 2};
+                            for (var key in population) {
+                                if (population.hasOwnProperty(key)) {
+                                    var val = population[key];
+//                                    alert(JSON.stringify(val['Country']));
+                                    dataPop.push([val['Country'], val['Population']]);
+//                                    alert(JSON.stringify(dataPop));
+                                }
+                            }
+//                            var data;
+//                            for (i = 0; i < 5; i++) {
+//                                data = population[i];
+//                                alert(JSON.stringify(data));
+//                            }
+
+                            // Load the Visualization API and the corechart package.
+                            google.charts.load('current', {'packages': ['corechart']});
+
+                            // Set a callback to run when the Google Visualization API is loaded.
+                            google.charts.setOnLoadCallback(drawChart);
+                            google.charts.setOnLoadCallback(drawBar);
+
+                        }
+                    });
+                });
+            });
+
+
+
+            // Callback that creates and populates a data table,
+            // instantiates the pie chart, passes in the data and
+            // draws it.
+            function drawChart() {
+
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Topping');
+                data.addColumn('number', 'Population');
+//                data.addRows([
+//                    ['Mushrooms', 3],
+//                    ['Onions', 1],
+//                    ['Olives', 1],
+//                    ['Zucchini', 1],
+//                    ['Pepperoni', 2]
+//                ]);
+
+                data.addRows(dataPop);
+
+                // Set chart options
+                var options = {'title': 'World population Pie chart',
+                    'width': 400,
+                    'height': 300};
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            }
+            
+            
+            
+             // Callback that creates and populates a data table,
+            // instantiates the pie chart, passes in the data and
+            // draws it.
+            function drawBar() {
+
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Topping');
+                data.addColumn('number', 'Population');
+//                data.addRows([
+//                    ['Mushrooms', 3],
+//                    ['Onions', 1],
+//                    ['Olives', 1],
+//                    ['Zucchini', 1],
+//                    ['Pepperoni', 2]
+//                ]);
+
+                data.addRows(dataPop);
+
+                // Set chart options
+                var options = {'title': 'World Population Bar chart',
+                    'width': 400,
+                    'height': 300};
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.BarChart(document.getElementById('bar_div'));
+                chart.draw(data, options);
+            }
+        </script>
+    </head>
+
+    <body>
+        <!--Div that will hold the pie chart-->
+        <div class="container starter-template">
+
+            <div >
+                <h1>HTML and MasterDataNode</h1>
+                <p class="lead">With MasterDataNode you don't require server<br> A standalone html page with CSS and JS, suffice to build an application</p>
+            </div>
+            <div >
+                <button class="btn btn-info">Click Button to create charts</button>
+            </div>
+            <div class="col-lg-12">
+                
+                <div id="chart_div" class="col-lg-6"></div>
+            <div id="bar_div" class="col-lg-6"></div>
+            </div>
+            
+        </div>
+        
+    </body>
+</html>
