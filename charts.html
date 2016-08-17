@@ -10,17 +10,55 @@
         <!-- Optional theme -->
         <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
 
-       
+
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
         <script>
             var dataPop = [];
+            var dataAr = [["Country", "Population"]];
             var bubbleChart = [['Country', 'Rank', 'PercentageOfWorld', 'Country', 'Population']];
+            var comboChart = [['CustName', 'Q1', 'Q2', 'Q3', 'Q4', 'TotalOrder']];
             $(document).ready(function () {
                 $("button").click(function () {
                     var SendInfo = {"limit": 5};
+                    
+                    
+                    //call customer
+                     $.ajax({
+                        url: 'http://api.masterdatanode.com/demo/customer/find/',
+                        type: 'get',
+                        data: {},
+                        headers: {
+                            "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+                            "Content-Type": 'application/json'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+//                            console.info(JSON.stringify(data));
+//                            $("#test_div").html(JSON.stringify(data));
 
+                            var population = data['customer'];
+//                            var myStringArray = ["Hello", "World"];
+                            var obj = {a: 1, b: 2};
+                            for (var key in population) {
+                                if (population.hasOwnProperty(key)) {
+                                    var val = population[key];
+//                                    alert(JSON.stringify(val['Country']));
+                                    comboChart.push([val['CustName'], val['Q1'], val['Q2'], val['Q3'], val['Q4'], val['CustomerOrder']])
+//                                    alert(JSON.stringify(dataPop));
+                                }
+                            }
+                            // Load the Visualization API and the corechart package.
+//                            google.charts.load('current', {'packages': ['corechart']});
+//                            google.charts.setOnLoadCallback(drawComboChart);
+                            
+
+
+                        }
+                    });
+                    
+                    //call population
                     $.ajax({
                         url: 'http://api.masterdatanode.com/demo/population/find/',
                         type: 'get',
@@ -42,16 +80,11 @@
                                     var val = population[key];
 //                                    alert(JSON.stringify(val['Country']));
                                     dataPop.push([val['Country'], val['Population']]);
+                                    dataAr.push([val['Country'], val['Population']]);
                                     bubbleChart.push([val['Country'], val['Rank'], val['PercentageOfWorld'], val['Country'], val['Population']])
 //                                    alert(JSON.stringify(dataPop));
                                 }
                             }
-//                            var data;
-//                            for (i = 0; i < 5; i++) {
-//                                data = population[i];
-//                                alert(JSON.stringify(data));
-//                            }
-
                             // Load the Visualization API and the corechart package.
                             google.charts.load('current', {'packages': ['corechart']});
 
@@ -59,9 +92,15 @@
                             google.charts.setOnLoadCallback(drawChart);
                             google.charts.setOnLoadCallback(drawBar);
                             google.charts.setOnLoadCallback(drawSeriesChart);
+                            google.charts.setOnLoadCallback(drawColumnChart);
+                            google.charts.setOnLoadCallback(drawComboChart);
+                            
+
 
                         }
                     });
+                    
+                    
                 });
             });
 
@@ -76,13 +115,6 @@
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'Topping');
                 data.addColumn('number', 'Population');
-//                data.addRows([
-//                    ['Mushrooms', 3],
-//                    ['Onions', 1],
-//                    ['Olives', 1],
-//                    ['Zucchini', 1],
-//                    ['Pepperoni', 2]
-//                ]);
 
                 data.addRows(dataPop);
 
@@ -95,10 +127,10 @@
                 var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                 chart.draw(data, options);
             }
-            
-            
-            
-             // Callback that creates and populates a data table,
+
+
+
+            // Callback that creates and populates a data table,
             // instantiates the pie chart, passes in the data and
             // draws it.
             function drawBar() {
@@ -107,13 +139,6 @@
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'Topping');
                 data.addColumn('number', 'Population');
-//                data.addRows([
-//                    ['Mushrooms', 3],
-//                    ['Onions', 1],
-//                    ['Olives', 1],
-//                    ['Zucchini', 1],
-//                    ['Pepperoni', 2]
-//                ]);
 
                 data.addRows(dataPop);
 
@@ -126,33 +151,49 @@
                 var chart = new google.visualization.BarChart(document.getElementById('bar_div'));
                 chart.draw(data, options);
             }
-            
-            function drawSeriesChart() {
 
-//                var data = google.visualization.arrayToDataTable([
-//                    ['ID', 'Life Expectancy', 'Fertility Rate', 'Region', 'Population'],
-//                    ['CAN', 80.66, 1.67, 'North America', 33739900],
-//                    ['DEU', 79.84, 1.36, 'Europe', 81902307],
-//                    ['DNK', 78.6, 1.84, 'Europe', 5523095],
-//                    ['EGY', 72.73, 2.78, 'Middle East', 79716203],
-//                    ['GBR', 80.05, 2, 'Europe', 61801570],
-//                    ['IRN', 72.49, 1.7, 'Middle East', 73137148],
-//                    ['IRQ', 68.09, 4.77, 'Middle East', 31090763],
-//                    ['ISR', 81.55, 2.96, 'Middle East', 7485600],
-//                    ['RUS', 68.6, 1.54, 'Europe', 141850000],
-//                    ['USA', 78.09, 2.05, 'North America', 307007000]
-//                ]);
+            function drawSeriesChart() {
 
                 var data = google.visualization.arrayToDataTable(bubbleChart);
 
                 var options = {
                     title: 'World population Bubble chart',
                     hAxis: {title: 'Rank'},
-                    vAxis: {title:  'PercentageOfWorld'},
+                    vAxis: {title: 'PercentageOfWorld'},
                     bubble: {textStyle: {fontSize: 11}}
                 };
 
                 var chart = new google.visualization.BubbleChart(document.getElementById('bubble_div'));
+                chart.draw(data, options);
+            }
+
+            function drawColumnChart() {
+
+                var data = google.visualization.arrayToDataTable(dataAr);
+
+                var view = new google.visualization.DataView(data);
+
+                var options = {
+                    title: "World Population Column chart",
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_div"));
+                chart.draw(view, options);
+            }
+
+
+            function drawComboChart() {
+                // Some raw data (not necessarily accurate)
+                var data = google.visualization.arrayToDataTable(comboChart);
+
+                var options = {
+                    title: 'Monthly Coffee Production by Country',
+                    vAxis: {title: 'Order'},
+                    hAxis: {title: 'CustName'},
+                    seriesType: 'bars',
+                    series: {5: {type: 'line'}}
+                };
+
+                var chart = new google.visualization.ComboChart(document.getElementById('combochart_div'));
                 chart.draw(data, options);
             }
         </script>
@@ -179,6 +220,18 @@
                 <div id="bubble_div" ></div>
 
             </div>
+            <div class="col-lg-12">
+
+                <div id="columnchart_div" ></div>
+
+            </div>
+            
+             <div class="col-lg-12">
+
+                <div id="combochart_div" ></div>
+
+            </div>
+
 
         </div>
 
