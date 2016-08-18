@@ -15,17 +15,17 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
         <script>
-            var dataPop = [];
+            var dataPop = [["Country", "Population"]];
             var dataAr = [["Country", "Population"]];
             var bubbleChart = [['Country', 'Rank', 'PercentageOfWorld', 'Country', 'Population']];
             var comboChart = [['CustName', 'Q1', 'Q2', 'Q3', 'Q4', 'TotalOrder']];
             $(document).ready(function () {
                 $("button").click(function () {
                     var SendInfo = {"limit": 5};
-                    
-                    
+
+
                     //call customer
-                     $.ajax({
+                    $.ajax({
                         url: 'http://api.masterdatanode.com/demo/customer/find/',
                         type: 'get',
                         data: {},
@@ -52,12 +52,12 @@
                             // Load the Visualization API and the corechart package.
 //                            google.charts.load('current', {'packages': ['corechart']});
 //                            google.charts.setOnLoadCallback(drawComboChart);
-                            
+
 
 
                         }
                     });
-                    
+
                     //call population
                     $.ajax({
                         url: 'http://api.masterdatanode.com/demo/population/find/',
@@ -94,13 +94,16 @@
                             google.charts.setOnLoadCallback(drawSeriesChart);
                             google.charts.setOnLoadCallback(drawColumnChart);
                             google.charts.setOnLoadCallback(drawComboChart);
+                            google.charts.setOnLoadCallback(drawDonutChart);
+                            google.charts.setOnLoadCallback(draw3dChart);
                             
+
 
 
                         }
                     });
-                    
-                    
+
+
                 });
             });
 
@@ -112,11 +115,7 @@
             function drawChart() {
 
                 // Create the data table.
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Topping');
-                data.addColumn('number', 'Population');
-
-                data.addRows(dataPop);
+                var data = google.visualization.arrayToDataTable(dataPop);
 
                 // Set chart options
                 var options = {'title': 'World population Pie chart',
@@ -136,11 +135,7 @@
             function drawBar() {
 
                 // Create the data table.
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Topping');
-                data.addColumn('number', 'Population');
-
-                data.addRows(dataPop);
+                var data = google.visualization.arrayToDataTable(dataPop);
 
                 // Set chart options
                 var options = {'title': 'World Population Bar chart',
@@ -196,6 +191,42 @@
                 var chart = new google.visualization.ComboChart(document.getElementById('combochart_div'));
                 chart.draw(data, options);
             }
+
+
+            function drawDonutChart() {
+                var data = google.visualization.arrayToDataTable(dataPop);
+
+                var options = {
+                    title: 'World Population Donut chart',
+                    pieHole: 0.4,
+//                    slices: {1: {offset: 0.2},
+//                        2: {offset: 0.3},
+//                        4: {offset: 0.4},
+//                        7: {offset: 0.5},
+//                    },
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('donutchart_div'));
+                chart.draw(data, options);
+            }
+            
+             function draw3dChart() {
+                var data = google.visualization.arrayToDataTable(dataPop);
+
+                var options = {
+                    title: 'World Population 3d chart',
+                    is3D: true,
+//                    slices: {1: {offset: 0.2},
+//                        2: {offset: 0.3},
+//                        4: {offset: 0.4},
+//                        7: {offset: 0.5},
+//                    },
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('3dchart_div'));
+                chart.draw(data, options);
+            }
+
         </script>
     </head>
 
@@ -214,6 +245,12 @@
 
                 <div id="chart_div" class="col-lg-6"></div>
                 <div id="bar_div" class="col-lg-6"></div>
+
+                <div id="donutchart_div" class="col-lg-6" style="width: 400px; height: 500px;"></div>
+
+
+                <div id="3dchart_div" class="col-lg-6" style="width: 400px; height: 500px;"></div>
+
             </div>
             <div class="col-lg-12">
 
@@ -225,12 +262,14 @@
                 <div id="columnchart_div" ></div>
 
             </div>
-            
-             <div class="col-lg-12">
+
+            <div class="col-lg-12">
 
                 <div id="combochart_div" ></div>
 
             </div>
+
+           
 
 
         </div>
