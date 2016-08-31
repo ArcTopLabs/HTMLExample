@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
- <!-- Latest compiled and minified CSS -->
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+        
+        <link href="../css/landing-page.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet" media="screen, print">
+        <link href="../css/navcustom.css" rel="stylesheet">
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
@@ -13,30 +17,30 @@
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
-<script>
-$(document).ready(function(){
-    $("button").click(function(){
-        $.ajax({
-			url: 'http://api.masterdatanode.com/demo/greeting/info/',
-			type: 'get',
-			data: {
-			},
-			headers: {
-				"access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
-				"Content-Type":  	'application/json'
-			},
-			dataType: 'json',
-			success: function (data) {
-				console.info(JSON.stringify(data));
-                                     $("#test_div").html( JSON.stringify(data) );
-			}
-		});
-    });
-});
-</script>
-</head>
-<body>
-
+        <script>
+            $(document).ready(function () {
+                $("button").click(function () {
+                    $.ajax({
+                        url: 'http://api.masterdatanode.com/demo-prod/greeting/info/',
+                        type: 'get',
+                        data: {
+                        },
+                        headers: {
+                            "access_token": '2QElaypzKUgiroyYIMu8oIXNy3ZPateI',
+                            "Content-Type": 'application/json'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            console.info(JSON.stringify(data));
+                            $("#test_div").html(JSON.stringify(data, null, 2));
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+      
         <div class="container starter-template">
 
             <div >
@@ -45,14 +49,18 @@ $(document).ready(function(){
             </div>
             <div >
                 <button class="btn btn-info">Send an HTTP table info request</button>
+                <a href="https://github.com/MasterDataNode/HTMLExample/blob/master/httptableinfo.html" target="blank" > <button class="btn btn-info">See Code</button> </a>
             </div>
-           
+
 
         </div>
-         <div id="test_div" class="col-lg-8">
+        <pre>
+                                                                    <code><div id="test_div" class="col-lg-8">
 
 
             </div>
+                                                                </code></pre>
 
-</body>
+
+    </body>
 </html>

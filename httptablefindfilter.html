@@ -5,6 +5,10 @@
         
          <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+        
+        <link href="../css/landing-page.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet" media="screen, print">
+        <link href="../css/navcustom.css" rel="stylesheet">
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
@@ -19,17 +23,17 @@
             $(document).ready(function(){
             $("button").click(function(){
                $.ajax({
-            url: 'http://api.masterdatanode.com/demo/greeting/find/',
+            url: 'http://api.masterdatanode.com/demo-prod/greeting/find/',
                     type: 'get',
                     data: {"LANGUAGE": "AFRIKAANS"},
                     headers: {
-                    "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+                    "access_token": '2QElaypzKUgiroyYIMu8oIXNy3ZPateI',
                             "Content-Type":  	'application/json'
                     },
                     dataType: 'json',
                     success: function (data) {
                     console.info(JSON.stringify(data));
-                         $("#test_div").html( JSON.stringify(data) );
+                         $("#test_div").html( JSON.stringify(data, null, 2) );
                     }
             });
             });
@@ -47,14 +51,17 @@
             </div>
             <div >
                 <button class="btn btn-info">Send an HTTP table find filter request</button>
+                <a href="https://github.com/MasterDataNode/HTMLExample/blob/master/httptablefindfilter.html" target="blank" > <button class="btn btn-info">See Code</button> </a>
             </div>
            
 
         </div>
-         <div id="test_div" class="col-lg-8">
+         <pre>
+                                                                    <code><div id="test_div" class="col-lg-8">
 
 
             </div>
+                                                                </code></pre>
 
     </body>
 </html>
